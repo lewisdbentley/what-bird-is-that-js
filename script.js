@@ -3,10 +3,10 @@ const title = document.getElementById('title')
 const play = document.getElementById('play')
 const arrow = document.getElementById('arrow')
 const next = document.getElementById('next')
-const blackbirdButton = document.getElementById('0')
-const robinButton = document.getElementById('1')
-const magpieButton = document.getElementById('2')
-const sparrowButton = document.getElementById('3')
+const firstButton = document.getElementById('0')
+const secondButton = document.getElementById('1')
+const thirdButton = document.getElementById('2')
+const fourthButton = document.getElementById('3')
 const scoreKeeper = document.getElementById('scoreKeeper')
 const totalKeeper = document.getElementById('total')
 const percentKeeper = document.getElementById('percent')
@@ -14,48 +14,100 @@ const answerButtons = document.getElementById('middle')
 const message = document.getElementById('message')
 
 const birdArray = [
-    'a blackbird',
-    'a robin',
-    'a magpie',
-    'a sparrow',
+    'blackbird',
+    'robin',
+    'magpie',
+    'sparrow',
+    'blue tit',
+    'skylark',
+    'cuckoo',
+    'starling',
+    'wren',
+    'thrush',
+    'herring gull',
+    'nightingale',
+    'green woodpecker',
+    'red kite',
+    'barn owl',
+    'canada goose'
 ]
+
+const birdAssets = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 , 13, 14, 15]
 
 // define functionality
 const audio = function() {
     note.play()
 }
 
-function random (max) {
+function random(max) {
     return Math.floor(Math.random() * Math.floor(max))
 }
 
+function getFourUnique(array) {
+    fourUnique = []
+    // add the first random bird to new array, and remove it from old array
+    const first = array[random(array.length)]
+    fourUnique.push(first)
+    array = array.filter(bird => bird !== first)
+    
+    // add the second random bird to new array, and remove it from old array
+    const second = array[random(array.length)]
+    fourUnique.push(second)
+    array = array.filter(bird => bird !== second)
+
+    // add the third random bird to new array, and remove it from old array
+    const third = array[random(array.length)]
+    fourUnique.push(third)
+    array = array.filter(bird => bird !== third)
+
+    // add the fourth random bird to new array, and remove it from old array
+    const fourth = array[random(array.length)]
+    fourUnique.push(fourth)
+    array = array.filter(bird => bird !== fourth)
+
+    return fourUnique
+}
+
 const setup = function() {
-    randomSelection = random(4)
+    // get four random numbers
+    fourUnique = getFourUnique(birdAssets)
+    console.log(fourUnique)
+
+    // setup the button content
+    firstButton.textContent = birdArray[fourUnique[0]]
+    secondButton.textContent = birdArray[fourUnique[1]]
+    thirdButton.textContent = birdArray[fourUnique[2]]
+    fourthButton.textContent = birdArray[fourUnique[3]]
+
+    randomSelection = fourUnique[random(4)]
     console.log(randomSelection)
+
     note = new Audio(`./assets/${randomSelection}.mp3`)
-    // console.log(randomSelection2)
-    // console.log(`the interval of ${intervalArray[interval]}`)
-    message.textContent = ''
-    blackbirdButton.style.backgroundColor = 'buttonface'
-    robinButton.style.backgroundColor = 'buttonface'
-    magpieButton.style.backgroundColor = 'buttonface'
-    sparrowButton.style.backgroundColor = 'buttonface'
 }
 setup()
+
+const wipe = function() {
+    message.textContent = ''
+    firstButton.style.backgroundColor = 'buttonface'
+    secondButton.style.backgroundColor = 'buttonface'
+    thirdButton.style.backgroundColor = 'buttonface'
+    fourthButton.style.backgroundColor = 'buttonface'    
+}
 
 const checker = function(selection, event) {
         let score = Number(scoreKeeper.firstChild.nodeValue)
         let total = Number(totalKeeper.firstChild.nodeValue)
         total++
         totalKeeper.firstChild.nodeValue = total
+        console.log(selection)
         const checkAnswer = Boolean(selection === randomSelection)
         event.target.style.backgroundColor = 'red'
         message.textContent = `Incorrect, try again.`
         if (checkAnswer) {
             score++
             scoreKeeper.firstChild.nodeValue = score
-            event.target.style.backgroundColor = 'green'
-            message.textContent = `Correct, it's ${birdArray[randomSelection]}`
+            event.target.style.backgroundColor = '#6BC74C'
+            message.textContent = `Correct, it's a ${birdArray[randomSelection]}`
         }
         let percent = Math.floor((score / total) * 100)
         percentKeeper.firstChild.nodeValue = `(${percent}%)`
@@ -64,11 +116,16 @@ const checker = function(selection, event) {
 // interactive elements
 
 play.addEventListener('click', function() {
-    arrow.removeAttribute('style')
-    start = null
-    progress = null
-    window.requestAnimationFrame(step) 
-    audio()
+    if(note.currentTime === 0) {
+        arrow.removeAttribute('style')
+        start = null
+        progress = null
+        window.requestAnimationFrame(step) 
+        audio()
+    } else {
+        note.pause()
+        note.currentTime = 0
+    }
 })
 
 next.addEventListener('click', function(){
@@ -77,20 +134,23 @@ next.addEventListener('click', function(){
     note.currentTime = 0
     start = null
     progress = null
+    wipe()
     setup()
+    window.requestAnimationFrame(step) 
+    audio()
 })
 
-blackbirdButton.addEventListener('click', function(event) {
-    checker(0, event)
+firstButton.addEventListener('click', function(event) {
+    checker(fourUnique[0], event)
 })
-robinButton.addEventListener('click', function(event) {
-    checker(1, event)
+secondButton.addEventListener('click', function(event) {
+    checker(fourUnique[1], event)
 })
-magpieButton.addEventListener('click', function(event) {
-    checker(2, event)
+thirdButton.addEventListener('click', function(event) {
+    checker(fourUnique[2], event)
 })
-sparrowButton.addEventListener('click', function(event) {
-    checker(3, event)
+fourthButton.addEventListener('click', function(event) {
+    checker(fourUnique[3], event)
 })
 
 // animation
