@@ -1,0 +1,26 @@
+Michał Jezierski
+Andrew Harrop
+David Bissett
+Marc Anderson
+B Whyte
+Huw Lloyd
+Ashley Fisher
+Mark Harper
+Graham Wallis
+Peter Stronach
+Olivier SWIFT
+Julie GROSSELET
+Craig Brookes
+Paul Driver
+Stuart Fisher
+Frank Lambery
+Dawid Jablonski
+David Darrell-Lambert
+Nic Hallam
+Patrik Åberg
+Gary Elton
+James P
+Terry Barnatt
+Josh Jones
+
+gen:"Passer" cnt:"United Kingdom" len_lt:30 q:A

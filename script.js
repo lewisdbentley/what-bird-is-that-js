@@ -14,22 +14,91 @@ const answerButtons = document.getElementById('middle')
 const message = document.getElementById('message')
 
 const birdArray = [
-    'blackbird',
-    'robin',
-    'magpie',
-    'sparrow',
-    'blue tit',
-    'skylark',
-    'cuckoo',
-    'starling',
-    'wren',
-    'thrush',
-    'herring gull',
-    'nightingale',
-    'green woodpecker',
-    'red kite',
-    'barn owl',
-    'canada goose'
+    {
+        name: 'blackbird',
+        scientificName: 'Turdus merula',
+        songs: [1, 2, 3]
+    },
+    {
+        name: 'robin',
+        scientificName: 'Erithacus rubecula',
+        songs: [4, 5, 6]
+    },
+    {
+        name: 'magpie',
+        scientificName: 'Pica pica',
+        songs: [7, 8, 9]
+    },
+    {
+        name: 'house sparrow',
+        scientificName: 'Passer domesticus',
+        songs: [10, 11, 12]
+    },
+    {
+        name: 'blue tit',
+        scientificName: 'Cyanistes caeruleus',
+        songs: [13, 14, 15]
+    },
+    {
+        name: 'skylark',
+        scientificName: 'Alauda arvensis',
+        songs: [16, 17, 18]
+    },
+    {
+        name: 'cuckoo',
+        scientificName: 'Acuculus canorus',
+        songs: [19, 20, 21]
+    },
+    {
+        name: 'starling',
+        scientificName: 'Sturnus vulgaris',
+        songs: [22, 23, 24]
+    },
+    {
+        name: 'Eurasian wren',
+        scientificName: 'Troglodytes troglodytes',
+        songs: [25, 26, 27]
+    },
+    {
+        name: 'song thrush',
+        scientificName: 'Turdus philomelos',
+        songs: [28, 29, 30]
+    },
+    {
+        name: 'herring gull',
+        scientificName: 'Larus argentatus',
+        songs: [31, 32, 33]
+    },
+    {
+        name: 'nightingale',
+        scientificName: 'Luscinia megarhynchos',
+        songs: [34, 35, 36]
+    },
+    {
+        name: 'European green woodpecker',
+        scientificName: 'Picus viridis',
+        songs: [37, 38, 39]
+    },
+    {
+        name: 'red kite',
+        scientificName: 'Milvus milvus',
+        songs: [40, 41, 42]
+    },
+    {
+        name: 'Western barn owl',
+        scientificName: 'Tyto alba',
+        songs: [43, 44, 45]
+    },
+    {
+        name: 'canada goose',
+        scientificName: 'Branta canadensis',
+        songs: [46, 47, 48]
+    },
+    {
+        name: 'Eurasian bittern',
+        scientificName: 'Botaurus stellaris',
+        songs: [49, 50, 51]
+    },
 ]
 
 const birdAssets = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 , 13, 14, 15]
@@ -71,18 +140,19 @@ function getFourUnique(array) {
 const setup = function() {
     // get four random numbers
     fourUnique = getFourUnique(birdAssets)
-    console.log(fourUnique)
 
     // setup the button content
-    firstButton.textContent = birdArray[fourUnique[0]]
-    secondButton.textContent = birdArray[fourUnique[1]]
-    thirdButton.textContent = birdArray[fourUnique[2]]
-    fourthButton.textContent = birdArray[fourUnique[3]]
+    firstButton.textContent = birdArray[fourUnique[0]].name
+    secondButton.textContent = birdArray[fourUnique[1]].name
+    thirdButton.textContent = birdArray[fourUnique[2]].name
+    fourthButton.textContent = birdArray[fourUnique[3]].name
 
-    randomSelection = fourUnique[random(4)]
+    randomSelection = birdArray[fourUnique[random(4)]]
     console.log(randomSelection)
+    randomSong = randomSelection.songs[random(3)]
+    console.log(randomSong)
 
-    note = new Audio(`./assets/${randomSelection}.mp3`)
+    note = new Audio(`./assets/${randomSong}.mp3`)
 }
 setup()
 
@@ -107,7 +177,7 @@ const checker = function(selection, event) {
             score++
             scoreKeeper.firstChild.nodeValue = score
             event.target.style.backgroundColor = '#6BC74C'
-            message.textContent = `Correct, it's a ${birdArray[randomSelection]}`
+            message.textContent = `Correct, it's a ${randomSelection.name}`
         }
         let percent = Math.floor((score / total) * 100)
         percentKeeper.firstChild.nodeValue = `(${percent}%)`
@@ -141,16 +211,16 @@ next.addEventListener('click', function(){
 })
 
 firstButton.addEventListener('click', function(event) {
-    checker(fourUnique[0], event)
+    checker(birdArray[fourUnique[0]], event)
 })
 secondButton.addEventListener('click', function(event) {
-    checker(fourUnique[1], event)
+    checker(birdArray[fourUnique[1]], event)
 })
 thirdButton.addEventListener('click', function(event) {
-    checker(fourUnique[2], event)
+    checker(birdArray[fourUnique[2]], event)
 })
 fourthButton.addEventListener('click', function(event) {
-    checker(fourUnique[3], event)
+    checker(birdArray[fourUnique[3]], event)
 })
 
 // animation
